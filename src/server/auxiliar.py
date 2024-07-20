@@ -1,11 +1,28 @@
+from typing import IO, Any
 import requests
 import json
+from bs4 import BeautifulSoup
 import os 
+from pydantic import BaseModel
+
 
 DATA_PATH = os.path.join(os.path.dirname(os.getcwd()), 'data')
 BOOKS_PATH = os.path.join(DATA_PATH, 'books.json')
 
-def get_json():
+
+# Representación de cada objeto libro perteneciente al archivo books.json 
+class BookSchema(BaseModel):
+    author: str
+    country: str
+    imageLink: str
+    language: str
+    link: str
+    pages: int
+    title: str
+    year: int
+
+
+def get_files():
 
 # Descarga el archivo .json
     
@@ -14,5 +31,12 @@ def get_json():
        with open(BOOKS_PATH, 'w') as json_file:
         json.dump(requests.get('https://raw.githubusercontent.com/benoitvallon/100-best-books/master/books.json').json(), json_file, indent = 4)
 
+# Descarga carpeta de imagenes
 
 
+
+def books_json() -> IO[Any] | None: 
+   
+    with open(BOOKS_PATH, 'r+') as file:
+        books = json.load(file)
+        return books
