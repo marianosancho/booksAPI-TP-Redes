@@ -6,7 +6,7 @@ import os
 from pydantic import BaseModel
 
 
-DATA_PATH = os.path.join(os.path.dirname(os.getcwd()), 'data')
+DATA_PATH = os.path.join(os.getcwd(),'src', 'data')
 BOOKS_PATH = os.path.join(DATA_PATH, 'books.json')
 
 

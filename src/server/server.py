@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile
+from fastapi.responses import StreamingResponse
 from typing import IO, Any
 from auxiliar import (get_files,
                       books_json,
@@ -8,6 +9,7 @@ from auxiliar import (get_files,
 import os
 import json 
 import uvicorn
+import shutil
 
 
 get_files()
@@ -63,7 +65,23 @@ def get_book_by(author : str | None = None, country: str | None = None, language
         return books_by_parameter
 
 
+
+
 # Agrega un nuevo libro al archivo 
+async def upload_image(image: UploadFile):
+    
+    image_path = DATA_PATH + f"/images/{image.filename}"
+    
+    try:
+        with open(image_path, "wb") as buffer:
+            shutil.copyfileobj(image.file, buffer)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error al guardar la portada")
+
+    return {"info": f"Imagen '{image.filename}' guardada en '{image_path}'"}
+
+
+
 @app.post("/post_book", tags= ["File handle"])
 def post_book(book : BookSchema): 
     
@@ -84,10 +102,8 @@ def post_book(book : BookSchema):
     with open(BOOKS_PATH, "w") as file:
         json.dump(books, file, indent=4)
 
-    return book    
+    return f"El libro {book.title} se ha guardado con éxito"
 
-if __name__ == "__main__":
-    uvicorn.run('server:app', reload=True)
 
 
 # Elimina el libro que cumple con los parámetros
@@ -108,7 +124,43 @@ def delete_book(title: str, author: str):
             with open(BOOKS_PATH, "w") as file:
                 json.dump(books, file, indent=4)
             
-            return {"Libro eliminado con éxito"}                
+            return {f"El libro {title} se ha eliminado con éxito"}                
 
     raise HTTPException(status_code=400, detail="El libro no se ha encontrado")
 
+
+
+# Devuelve la portada del libro  
+@app.get("/get_image", tags=['Image handle'])
+def get_image(imageLink :str): 
+    
+    #image_url = book.imageLink
+    image_url = os.path.join(DATA_PATH,  imageLink)
+
+    if not os.path.exists(image_url):
+        raise HTTPException(status_code=404, detail="Imagen no encontrada")
+    
+    try:
+        file = open(image_url, mode="rb")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error al abrir el archivo")
+    
+    return StreamingResponse(file, media_type="image/jpeg")
+
+
+# Actualiza la portada de un libro
+@app.post("/upload_image" , tags = ['Image handle'])
+async def upload_image(image: UploadFile):
+    
+    image_path = DATA_PATH + f"/images/{image.filename}"
+    
+    try:
+        with open(image_path, "wb") as buffer:
+            shutil.copyfileobj(image.file, buffer)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error al guardar la portada")
+
+    return {"info": f"Imagen '{image.filename}' guardada en '{image_path}'"}
+
+if __name__ == "__main__":
+    uvicorn.run('server:app', reload=True)
