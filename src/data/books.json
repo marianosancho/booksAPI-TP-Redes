@@ -998,5 +998,25 @@
         "pages": 408,
         "title": "Memoirs of Hadrian",
         "year": 1951
+    },
+    {
+        "author": "Coronel",
+        "country": "ac",
+        "imageLink": "images\\coronel/jpg",
+        "language": "as",
+        "link": "adfsd",
+        "pages": 100,
+        "title": "Coronel",
+        "year": 102
+    },
+    {
+        "author": "coronel",
+        "country": "spanish",
+        "imageLink": "images\\coronel.jpg",
+        "language": "spanish",
+        "link": "sad",
+        "pages": 100,
+        "title": "coronel",
+        "year": 1960
     }
 ]

@@ -1,7 +1,7 @@
 from typing import IO, Any
 import requests
 import json
-from bs4 import BeautifulSoup
+
 import os 
 from pydantic import BaseModel
 
@@ -30,8 +30,6 @@ def get_files():
        
        with open(BOOKS_PATH, 'w') as json_file:
         json.dump(requests.get('https://raw.githubusercontent.com/benoitvallon/100-best-books/master/books.json').json(), json_file, indent = 4)
-
-# Descarga carpeta de imagenes
 
 
 
