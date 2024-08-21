@@ -1,4 +1,4 @@
-PROCEDIMIENTO SERVIDOR
+# PROCEDIMIENTO SERVIDOR
 
 Para iniciar el servidor, será necesario primero crear y activar el entorno virtual en la carpeta
 descargada
@@ -20,7 +20,7 @@ Si se quiere acceder al servidor desde otra terminal, se deberá cambiar el valo
 por la IP del servidor.
 
 
-PROCEDIMIENTO CLIENTE
+# PROCEDIMIENTO CLIENTE
 
 El proceso de inicio del cliente es similar al del servidor. En una terminal, abrimos la carpeta
 descargada y creamos el entorno virtual.
