@@ -12,7 +12,7 @@ import uvicorn
 import shutil
 
 
-HOST = "192.168.100.18"
+HOST = "localhost"
 PORT = 8000
 
 
@@ -92,7 +92,7 @@ def post_book(book : BookSchema):
 
 
 # Elimina el libro que cumple con los parámetros
-@app.post("/delete_book", tags = ["File handle"])
+@app.delete("/delete_book", tags = ["File handle"])
 def delete_book(author: str, title: str):
     
     try:
@@ -149,7 +149,7 @@ async def upload_image(image: UploadFile):
     
 
 # Borra una imagen de la carpeta images
-@app.post("/delete_image",tags = ["Image handle"])
+@app.delete("/delete_image",tags = ["Image handle"])
 def delete_image(imageLink : str):
     
     image_path = os.path.join(DATA_PATH, imageLink)
