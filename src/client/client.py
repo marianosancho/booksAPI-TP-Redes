@@ -1,16 +1,19 @@
 from menu import (menu_principal,
                   menu_get_book_by)
-from auxiliar_client import (get_all_books,
+from auxiliar_client import (check_server_status,
+                            get_all_books,
                             get_book_by,
                             post_book,
                             delete_book,
                             HOST,
                             PORT)
-
+import requests
 from typing import List, Dict, Any 
 
    
 def main():
+
+    check_server_status()
 
     while True:         
         

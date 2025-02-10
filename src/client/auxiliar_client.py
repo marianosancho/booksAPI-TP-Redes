@@ -1,13 +1,27 @@
 # Archivo para las funciones necesarias para el cliente
-
+import sys
 import requests
 import json
 from typing import List, Dict, Any 
 
-HOST: str = 'http://192.168.100.18'
+HOST: str = 'localhost'
 PORT: str = '8000' 
 
 url =  HOST + ':' + PORT
+
+
+def check_server_status() -> None:
+    """
+    Verifica el estado del servidor cuando se inicia el cliente.
+    En caso de error lo notifica y sale del programa
+    """
+    try:
+        response = requests.get(f"http://{url}")
+        if response.status_code != 200:            
+            print(f" API respondió con código {response.status_code}")
+    except requests.exceptions.ConnectionError:
+        print(" No se pudo conectar a la API. Asegúrate de que está encendida.")
+        sys.exit(1)
 
 def get_all_books() -> List[Dict[str, Any]]: 
     # Muestra en pantalla y devuelve todos los libros
@@ -112,12 +126,12 @@ def delete_book():
     title = input("Ingrese el título a eliminar: ")
     author = input("Ingrese el nombre del autor: ")
     book = get_book_by(title = title)    
-    response = requests.post(url + "/delete_book", params={'author':author, 'title' : title})
+    response = requests.delete(url + "/delete_book", params={'author':author, 'title' : title})
     
     if response.status_code == 200:
         print(response.json())
         
-        delete_image_response = requests.post(url + "/delete_image", params ={"imageLink": book[0].get('imageLink')})
+        delete_image_response = requests.delete(url + "/delete_image", params ={"imageLink": book[0].get('imageLink')})
         print(delete_image_response.json())
 
     
