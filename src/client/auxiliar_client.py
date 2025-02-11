@@ -7,7 +7,7 @@ from typing import List, Dict, Any
 HOST: str = 'localhost'
 PORT: str = '8000' 
 
-url =  HOST + ':' + PORT
+url = "http://" + HOST + ':' + PORT
 
 
 def check_server_status() -> None:
@@ -16,7 +16,7 @@ def check_server_status() -> None:
     En caso de error lo notifica y sale del programa
     """
     try:
-        response = requests.get(f"http://{url}")
+        response = requests.get(url)
         if response.status_code != 200:            
             print(f" API respondió con código {response.status_code}")
     except requests.exceptions.ConnectionError:
@@ -86,7 +86,7 @@ def post_book():
             print("Ingrese un número válido.")   
     
     link = input("Link de refencia: ")
-    image = input('Nombre del archivo de su portada (images\nombre-archivo.jpg): ') 
+    image = input('Nombre del archivo de su portada (images/nombre-archivo.jpg): ') 
 
     book  : dict = {
         "author": author,
